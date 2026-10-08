@@ -54,3 +54,25 @@ streams image files from disk rather than buffering entire panoramas in memory,
 and supplies ETag/HTTP cache headers so clients can reuse unchanged images.
 The Flutter viewer limits decoded panorama width to 4096 pixels to reduce
 mobile memory use; the original JPEG is still transferred on the first request.
+
+## Deploy the backend to Railway
+
+The backend includes a Dockerfile and Railway configuration. In Railway, create
+a service from this GitHub repository and set its **Root Directory** to
+`/backend`. Railway will build the backend container, which listens on Railway's
+provided `PORT` and exposes `/api/health` as its health check. Generate a
+Railway public domain for the service.
+
+The panorama images and `data/panoramas.json` are copied into the deployment
+image from the `backend/` directory in Git. Commit the images you want deployed
+to the repository; changing the panorama collection requires a new deployment.
+For collections too large to store in Git, move images to object storage and
+serve them from there rather than relying on a Railway container's writable
+filesystem.
+
+Build the Flutter client with the Railway service URL, without a trailing slash:
+
+```powershell
+cd frontend
+flutter build apk --dart-define=API_BASE_URL=https://your-service.up.railway.app
+```

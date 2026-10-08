@@ -7,7 +7,9 @@ import '../lib/routes/api_router.dart';
 import '../lib/services/panorama_service.dart';
 
 Future<void> main() async {
-  final projectDirectory = File.fromUri(Platform.script).parent.parent;
+  final dataDirectory = Platform.environment['PANORAMA_DATA_DIR'] ??
+      File.fromUri(Platform.script).parent.parent.path;
+  final projectDirectory = Directory(dataDirectory);
   final panoramaService = PanoramaService(
     imagesDirectory: Directory(
       '${projectDirectory.path}${Platform.pathSeparator}images',
@@ -30,5 +32,6 @@ Future<void> main() async {
     InternetAddress.anyIPv4,
     int.parse(Platform.environment['PORT'] ?? '8080'),
   );
-  stdout.writeln('Campus Street View API listening on http://${server.address.host}:${server.port}');
+  stdout.writeln(
+      'Campus Street View API listening on http://${server.address.host}:${server.port}');
 }
