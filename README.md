@@ -27,9 +27,11 @@ image names, and headings.
    flutter run
    ```
 
-   For an Android emulator, use
-   `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080`. Other devices
-   should use the API host address reachable from that device.
+   By default, the app uses the deployed Railway backend at
+   `https://vazhikaatti-production.up.railway.app`. To use a local backend,
+   override it with
+   `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080` on the Android
+   emulator, or `http://localhost:8080` on desktop/web.
 
 Add panoramas as `.jpg` files to `backend/images/`, named by their integer
 coordinates, such as `-1_2_0.jpg`. The API scans this folder on each request;
@@ -76,3 +78,7 @@ Build the Flutter client with the Railway service URL, without a trailing slash:
 cd frontend
 flutter build apk --dart-define=API_BASE_URL=https://your-service.up.railway.app
 ```
+
+The current production service URL is
+`https://vazhikaatti-production.up.railway.app`, which is also the frontend's
+default. Set `API_BASE_URL` only when targeting a different backend.

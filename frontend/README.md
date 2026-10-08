@@ -1,17 +1,21 @@
-# campus_street_view
+# Campus Street View
 
-A new Flutter project.
+The frontend uses the production Railway backend by default:
+`https://vazhikaatti-production.up.railway.app`.
 
-## Getting Started
+Run the app:
 
-This project is a starting point for a Flutter application.
+```powershell
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+To use a different backend, provide its base URL at build/run time:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```powershell
+flutter run --dart-define=API_BASE_URL=https://your-service.up.railway.app
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For local development, start the backend and use
+`http://10.0.2.2:8080` on an Android emulator or `http://localhost:8080` on
+desktop/web.

@@ -1,21 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/panorama.dart';
 
-String getDefaultApiBaseUrl() {
-  if (kIsWeb) {
-    return 'http://localhost:8080';
-  }
+const _defaultApiBaseUrl = 'https://vazhikaatti-production.up.railway.app';
 
-  if (defaultTargetPlatform == TargetPlatform.android) {
-    return 'http://10.0.2.2:8080';
-  }
-
-  return 'http://localhost:8080';
-}
+String getDefaultApiBaseUrl() => _defaultApiBaseUrl;
 
 String getApiBaseUrl() {
   final configured = const String.fromEnvironment(
