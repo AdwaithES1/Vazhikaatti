@@ -48,3 +48,9 @@ In the viewer, each enabled arrow moves exactly one graph edge and loads that
 node's panorama. Disabled arrows indicate that no connected panorama exists
 in that direction. Drag to look around, pinch to zoom on touch devices, or use
 the on-screen zoom controls.
+
+Panorama image data is loaded only when its Street View node is opened. The API
+streams image files from disk rather than buffering entire panoramas in memory,
+and supplies ETag/HTTP cache headers so clients can reuse unchanged images.
+The Flutter viewer limits decoded panorama width to 4096 pixels to reduce
+mobile memory use; the original JPEG is still transferred on the first request.

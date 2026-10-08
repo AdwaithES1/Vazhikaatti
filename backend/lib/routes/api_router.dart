@@ -36,9 +36,29 @@ Router createApiRouter(PanoramaService panoramas) {
   router.get('/images/<image>', (Request request, String image) async {
     final file = await panoramas.imageByName(image);
     if (file == null) return Response.notFound('Panorama image not found.');
+    final stat = await file.stat();
+    final etag = '"${stat.size}-${stat.modified.microsecondsSinceEpoch}"';
+    final cacheHeaders = {
+      'cache-control': 'public, max-age=3600, must-revalidate',
+      'etag': etag,
+      'last-modified': HttpDate.format(stat.modified),
+    };
+    final ifNoneMatch = request.headers['if-none-match'];
+    if (ifNoneMatch != null &&
+        ifNoneMatch
+            .split(',')
+            .map((value) => value.trim())
+            .any((value) => value == etag || value == '*')) {
+      return Response(304, headers: cacheHeaders);
+    }
+
     return Response.ok(
-      await file.readAsBytes(),
-      headers: {'content-type': 'image/jpeg', 'cache-control': 'no-cache'},
+      file.openRead(),
+      headers: {
+        ...cacheHeaders,
+        'content-type': 'image/jpeg',
+        'content-length': '${stat.size}',
+      },
     );
   });
 

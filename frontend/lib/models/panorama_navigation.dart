@@ -39,7 +39,9 @@ class PanoramaGraph {
 
       for (final entry in candidates.entries) {
         final neighbor = nodesByCoordinate[entry.value];
-        if (neighbor != null) nodeNeighbors[entry.key] = neighbor;
+        if (neighbor != null && !_isBlockedConnection(panorama, neighbor)) {
+          nodeNeighbors[entry.key] = neighbor;
+        }
       }
       neighbors[panorama.id] = Map.unmodifiable(nodeNeighbors);
 
@@ -58,6 +60,18 @@ class PanoramaGraph {
 
   late final Map<String, Map<PanoramaDirection, Panorama>> _neighborsById;
   late final List<PanoramaGraphEdge> edges;
+
+  bool _isBlockedConnection(Panorama fromPanorama, Panorama to) {
+    final from = fromPanorama.coordinate;
+    final destination = to.coordinate;
+    final isLowerNode =
+        from.x == 1 && from.y == 4 && from.z == 0 ||
+        destination.x == 1 && destination.y == 4 && destination.z == 0;
+    final isUpperNode =
+        from.x == 1 && from.y == 5 && from.z == 0 ||
+        destination.x == 1 && destination.y == 5 && destination.z == 0;
+    return isLowerNode && isUpperNode;
+  }
 
   Map<PanoramaDirection, Panorama> neighborsOf(Panorama panorama) =>
       _neighborsById[panorama.id] ?? const {};

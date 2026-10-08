@@ -41,6 +41,17 @@ void main() {
     expect(graph.edges, isEmpty);
   });
 
+  test('does not connect nodes (1,4,0) and (1,5,0)', () {
+    final lower = panorama('1_4_0.jpg');
+    final upper = panorama('1_5_0.jpg');
+    final graph = PanoramaGraph([lower, upper]);
+
+    expect(graph.neighborsOf(lower), isEmpty);
+    expect(graph.neighborsOf(upper), isEmpty);
+    expect(graph.edges, isEmpty);
+    expect(graph.shortestPath(from: lower, to: upper), isNull);
+  });
+
   test(
     'builds each visual edge once and keeps different Z levels separate',
     () {

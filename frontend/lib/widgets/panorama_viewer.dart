@@ -72,8 +72,10 @@ class PanoramaViewerState extends State<PanoramaViewer> {
       _imageStream!.removeListener(_imageListener!);
     }
     _image = null;
-    final stream = NetworkImage(widget.imageUrl)
-        .resolve(const ImageConfiguration());
+    final stream = ResizeImage(
+      NetworkImage(widget.imageUrl),
+      width: 4096,
+    ).resolve(const ImageConfiguration());
     _imageStream = stream;
     _imageListener = ImageStreamListener(
       (frame, synchronousCall) {
